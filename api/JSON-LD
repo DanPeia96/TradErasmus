@@ -1,0 +1,62 @@
+{
+    "@context": "http://schema.org/",
+    "@type" : "User",
+    "id" : "{id}",
+    "name" : "{userName}",
+    "pass" : "{pass}",
+    "city" : "{city}",
+    "telephone" : "{teleph}",
+    "email": "{email}",
+    "nacionality" : "{nacionality}"
+}
+
+{
+    "@context": "http://schema.org/",
+    "@type" : "Publication",
+    "id" : "{id}",
+    "idUser" : "{idUser}", 
+    "title" : "{title}",
+    "descrioption" : "{descrip}",
+    "price" : "{price}",
+    "images" : [
+        {
+            "imgId" : "{imgId}",
+            "name" : "{imgName}"
+        }
+    ],
+    "pubDate" :  "{pubDate}",
+    "sellDate" : "{sellDate}"
+}
+
+
+
+/*_____________________________________________________
+    LOCALIZATION
+
+{
+  "homeMobileCountryCode": 310,
+  "homeMobileNetworkCode": 410,
+  "radioType": "gsm",
+  "carrier": "Vodafone",
+  "considerIp": true,
+  "cellTowers": [
+    {
+      "cellId": 170402199,
+      "locationAreaCode": 35632,
+      "mobileCountryCode": 310,
+      "mobileNetworkCode": 410,
+      "age": 0,
+      "signalStrength": -60,
+      "timingAdvance": 15
+    }
+  ],
+  "wifiAccessPoints": [
+    {
+         "macAddress": "04:bd:88:4d:66:e0",
+        "signalStrength": -43,
+        "age": 0,
+        "channel": 11,
+        "signalToNoiseRatio": 0
+    }
+  ]
+}

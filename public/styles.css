@@ -1,0 +1,96 @@
+body{
+	background-color: #009975; 
+
+}
+
+h1{
+	text-align: center;
+	margin-top: 50px;
+
+}
+
+.header_logo{
+	display: flex;
+   	justify-content: center;
+   	align-items: center;
+}
+
+.lorem_ip{
+	margin-left: 400px;
+	margin-right: 400px;
+	margin-bottom: 80px;
+}
+
+.lorem_ip p{
+	text-align: justify;
+}
+.aux.btn.btn-secondary{
+	width:300px;
+    height:300px;
+    border-radius: 20px;
+    font-size:40px;
+    font-weight:bold;
+}
+.prueba{
+
+    font-size:10px;
+    font-weight:bold;
+    border:0px;
+    width:800px !important;
+    height:19px;
+}
+
+.inicio{
+	padding-top: 100px;
+	padding-bottom: 100px;
+	align-content: center;
+	width: 100%;
+	display: flex;
+  	justify-content: center;
+}
+
+.btn1{
+	margin-right: 100px;
+}
+.btn2{
+	margin-left: 100px;
+}
+
+.menu{
+	display: flex;
+  	justify-content: center;
+}
+
+.pestanya{
+	margin-bottom: 100px;
+}
+
+footer {
+  background-color: #ffffff;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  color: #000000;
+
+}
+
+.cnt_footer{
+	text-align: center;
+	padding: 20px;
+}
+
+.copyright{
+	width: 100%;
+}
+
+.cols_fot{
+	width: 30%;
+}
+.container_footer{
+	display: flex;
+  	justify-content: center;
+}
+
+.fdo_oscuro{
+	background-color: #e0e4e5;
+}

@@ -1,0 +1,410 @@
+---
+swagger: "2.0"
+info:
+  description: "Trading app between exchange students. For example, Erasmus people who are leaving the country where they did their exchange experiance can't carry everything they bought because it it too expensive to send it to their country, so they can send it to new incoming Erasmus who is quite probable that they will need the same things"
+  version: "1.0.0"
+  title: "Swagger TradErasmus"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:9000"
+basePath: "/"
+tags:
+- name: "Publications"
+  description: "Publicated objects that the user wants to sell or buy"
+- name: "user"
+  description: "Users that want to sell or buy something"
+schemes:
+- "http"
+paths:
+  /publications:
+    post:
+      tags:
+      - "publications"
+      summary: "Add a new publication"
+      description: "Publish an object that the user wants to sell"
+      operationId: "addPublication"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "body of the publishment"
+        required: true
+        schema:
+          $ref: "#/definitions/Publication"
+      responses:
+        "405":
+          description: "Invalid input"
+      security:
+      - publications_auth:
+        - "write:publications"
+        - "read:publications"
+      x-swagger-router-controller: "Publications"
+  /publication/{publicationCity}:
+    get:
+      tags:
+      - "publications"
+      summary: "Search publication"
+      description: "Search publications in a city where you are interested to buy."
+      operationId: "getPublicationByCity"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "publicationCity"
+        in: "path"
+        description: "Publications that match with the input string"
+        required: true
+        type: "integer"
+        format: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Publication"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Publications not found"
+      security:
+      - api_key: []
+      x-swagger-router-controller: "Publications"
+    put:
+      tags:
+      - "publications"
+      summary: "Updates a publication"
+      description: "Updates a publication which the owner is interested to"
+      operationId: "updatePublicationWithForm"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "publicationId"
+        in: "path"
+        description: "ID of publication that needs to be updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "name"
+        in: "formData"
+        description: "Updated price of the publication"
+        required: false
+        type: "string"
+      - name: "status"
+        in: "formData"
+        description: "Updated status of the publications"
+        required: false
+        type: "string"
+      responses:
+        "405":
+          description: "Invalid input"
+      security:
+      - publications_auth:
+        - "write:publications"
+        - "read:publications"
+      x-swagger-router-controller: "Publications"
+  /user:
+    post:
+      tags:
+      - "user"
+      summary: "Create user"
+      description: "This can only be done by the logged in user."
+      operationId: "createUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+      x-swagger-router-controller: "User"
+  /user/createWithArray:
+    post:
+      tags:
+      - "user"
+      summary: "Creates list of users with given input array"
+      description: ""
+      operationId: "createUsersWithArrayInput"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of user object"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+      x-swagger-router-controller: "User"
+  /user/login:
+    get:
+      tags:
+      - "user"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          headers:
+            X-Rate-Limit:
+              type: "integer"
+              format: "int32"
+              description: "calls per hour allowed by the user"
+            X-Expires-After:
+              type: "string"
+              format: "date-time"
+              description: "date in UTC when token expires"
+          schema:
+            type: "string"
+        "400":
+          description: "Invalid username/password supplied"
+      x-swagger-router-controller: "User"
+  /user/logout:
+    get:
+      tags:
+      - "user"
+      summary: "Logs out current logged in user session"
+      description: ""
+      operationId: "logoutUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters: []
+      responses:
+        default:
+          description: "successful operation"
+      x-swagger-router-controller: "User"
+  /user/{username}:
+    get:
+      tags:
+      - "user"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "getUserByName"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        "400":
+          description: "Invalid username supplied"
+        "404":
+          description: "User not found"
+      x-swagger-router-controller: "User"
+    put:
+      tags:
+      - "user"
+      summary: "Updated user"
+      description: "This can only be done by the logged in user."
+      operationId: "updateUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "name that need to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "400":
+          description: "Invalid user supplied"
+        "404":
+          description: "User not found"
+      x-swagger-router-controller: "User"
+    delete:
+      tags:
+      - "user"
+      summary: "Delete user"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        "400":
+          description: "Invalid username supplied"
+        "404":
+          description: "User not found"
+      x-swagger-router-controller: "User"
+securityDefinitions:
+  publications_auth:
+    type: "oauth2"
+    authorizationUrl: "http://localhost:9000/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:publications: "Modify publications in your account"
+      read:publications: "Read your publications"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Category:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Category"
+    example:
+      name: "name"
+      id: 6
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      phone:
+        type: "string"
+      userStatus:
+        type: "integer"
+        format: "int32"
+        description: "User Status"
+    xml:
+      name: "User"
+    example:
+      firstName: "firstName"
+      lastName: "lastName"
+      password: "password"
+      userStatus: 6
+      phone: "phone"
+      id: 0
+      email: "email"
+      username: "username"
+  Tag:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Tag"
+    example:
+      name: "name"
+      id: 1
+  Publication:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      category:
+        $ref: "#/definitions/Category"
+      name:
+        type: "string"
+        example: "doggie"
+      photoUrls:
+        type: "array"
+        xml:
+          name: "photoUrl"
+          wrapped: true
+        items:
+          type: "string"
+      tags:
+        type: "array"
+        xml:
+          name: "tag"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Tag"
+      status:
+        type: "string"
+        description: "publications status in the store"
+        enum:
+        - "available"
+        - "pending"
+        - "sold"
+    xml:
+      name: "publications"
+    example:
+      photoUrls:
+      - "photoUrls"
+      - "photoUrls"
+      name: "doggie"
+      id: 0
+      category:
+        name: "name"
+        id: 6
+      tags:
+      - name: "name"
+        id: 1
+      - name: "name"
+        id: 1
+      status: "available"

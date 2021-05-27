@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+    <title>TradErasmus</title>
+
+    <!-- Required Stylesheets -->
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"
+    />
+
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="styles.css"
+    />
+
+    <!-- Required scripts -->
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
+
+  </head>
+  <header>
+    <h1><strong>TradErasmus</strong></h1>
+    <div class="header_logo">
+    <img src="logo.png" />
+  </div>
+  </header>
+  <body>
+    <!-- Our application root element -->
+    <div id="app">
+      <div class="lorem_ip">
+        <p> This platform hepls you to sell the stuff that you cant's 
+          take to your country and help the incoming Erasmus earn money       
+        </p>
+      </div>
+
+      <div class="menu">
+        <b-button-group>
+            <b-button v-on:click="atras_principal">Inicio</b-button>
+            <b-button v-on:click="registro">SignUp</b-button>
+            <b-button v-on:click="login">Login</b-button>
+        </b-button-group>
+    </div>
+
+
+    <p class="text-center" id="info"></p>
+
+
+
+    <div class="inicio" v-show="pes==0">
+      <div class=btn1>
+        <b-button class="aux" v-on:click="list_all_publiations">See all the publications</b-button>
+      </div>
+      <div class="btn2">
+        <b-button class="aux" v-on:click="list_city_publications">See publications from a city</b-button>      
+      </div>
+    </div>
+
+    
+
+
+		<b-form @submit="onSubmit">
+      <b-form-group id="usernameGroup" label="Probar la búsqueda de publicaciones">
+        <b-form-input
+          id="usu"
+          v-model="username"
+          placeholder="Username"
+          required
+        ></b-form-input>
+      </b-form-group>
+
+      <b-button type="submit" variant="primary">Buscar usuario</b-button>
+    </b-form>
+    {{user}}
+    <br>
+    <b-button variant="dark" href="signup.html">Registrarse</b-button>
+      </b-container>
+    </div>
+
+    <!-- Start running your app -->
+    <script>
+      window.app  = new Vue({
+        el: '#app',
+        data: {
+          username:   '',//nombre de usuario (no se usa)
+		  user: {},
+        },
+        methods:{
+          onSubmit(event){
+			var self = this
+            event.preventDefault()
+			fetch('/user/' + this.username)
+            .then(function(r){return r.json()})
+            .then(function(data){console.log(data)
+				self.user=data[0]})
+            .catch(function(error){console.log(error)})
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
